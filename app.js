@@ -1,4 +1,4 @@
-function getComputerChoice() {  
+function getComputerChoice() {
 
     let num = Math.floor(Math.random() * 3) + 1;
     let result;
@@ -12,76 +12,63 @@ const btnRock = document.querySelector('#rock')
 const btnPaper = document.querySelector('#paper')
 const btnScissors = document.querySelector('#scissors')
 
-btnRock.addEventListener('click', function() {
-    playRound('rock', getComputerChoice());
+btnRock.addEventListener('click', function () {    /////////// only 'rock' works so far, have to figure out how to have multiple selects
+    game('rock', getComputerChoice())
 })
-btnPaper.addEventListener('click', function() {
-    playRound('paper', getComputerChoice());
+btnPaper.addEventListener('click', function () {
+    game('paper', getComputerChoice())
 })
-btnScissors.addEventListener('click', function() {
-    playRound('scissors', getComputerChoice());
+btnScissors.addEventListener('click', function () {
+    game('scissors', getComputerChoice())
 })
 
 
-function playRound(playerSelection, computerSelection) {    //get player&bot select, make rules to apply for the round
+function playRound(playerSelection, computerSelection) { //get player&bot select, make rules and apply them
     let rules = {
         rock: 'scissors',
         paper: 'rock',
         scissors: 'paper'
     }
-    if (computerSelection === rules[playerSelection]) { console.log('Player wins') }
-    if (playerSelection === rules[computerSelection]) { console.log('Computer wins') }
-    if (playerSelection === computerSelection) { console.log('Draw!') }
+    if (computerSelection === rules[playerSelection]) { console.log('logging player wins'); return 'Player wins' }
+    if (playerSelection === rules[computerSelection]) { console.log('logging computer wins'); return 'Computer wins' }
+    if (playerSelection === computerSelection) { console.log('logging draw'); return 'Draw' }
 }
 
+let playerScore = 0;
+let computerScore = 0;
+let currentScore = document.querySelector('#currentScore')   // game default stuff
+let isGameOver = false;
+let winningScore = 3;
 
+function game(playerSelection, computerSelection) {    
 
+    let result = playRound(playerSelection, computerSelection)
 
+    if (!isGameOver) {
 
+        if (result === 'Player wins') {
+            playerScore += 1;
+            console.log(`Player (${playerScore}) Computer (${computerScore})`)
+            currentScore.textContent = `Player (${playerScore}) Computer (${computerScore})`
+        };
+        if (result === 'Computer wins') {
+            computerScore += 1;
+            console.log(`Player (${playerScore}) Computer (${computerScore})`)
+            currentScore.textContent = `Player (${playerScore}) Computer (${computerScore})`
+        };
+        if (result === 'Draw') {
+            console.log(`Player (${playerScore}) Computer (${computerScore})`)
+            currentScore.textContent = `Player (${playerScore}) Computer (${computerScore})`
+        };
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function game() {                                     //play 3 round and keep track of score. then output final results
-//     let playerScore = 0;
-//     let computerScore = 0;
-
-//     for (let i = 0; i < 3; i++) {
-
-//         let result = playRound()
-//         if (result === 'Player wins') { playerScore += 1 };
-//         if (result === 'Computer wins') { computerScore += 1 };
-//         console.log(`${playerScore} to ${computerScore}`)
-//     }
-
-//     if (playerScore > computerScore) 
-//     {console.log(`Player won the game ${playerScore} to ${computerScore}`)}
-
-//     if (playerScore < computerScore)
-//      {console.log(`Computer won the game ${computerScore} to ${playerScore}`)}
-
-//     if (playerScore === computerScore) 
-//     {console.log(`Wow, draw! ${playerScore} to ${computerScore}!`)}
-// }
-
-// game();
+    if (playerScore === winningScore || computerScore === winningScore) {
+        isGameOver = true;
+        const resultDisplay = document.querySelector('#resultDisplay')
+        if (playerScore > computerScore) { resultDisplay.textContent = 'PLAYER WON' }
+        if (playerScore < computerScore) { resultDisplay.textContent = 'COMPUTER WON' }
+        if (playerScore === computerScore) { resultDisplay.textContent = 'DRAW OMG' }
+    }
+}
 
 
